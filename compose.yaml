@@ -1,0 +1,35 @@
+name: cfis
+services:
+  api:
+    build: ./backend/CFIS.Api
+    ports:
+      - "127.0.0.1:5080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Business__RequireIdempotencyKeys: "true"
+      DataProtection__Path: /home/app/.aspnet/DataProtection-Keys
+      ConnectionStrings__Database: Host=postgres;Database=cfis;Username=cfis_app;Password=${APP_DATABASE_PASSWORD:?Run scripts/init-env.ps1}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - keys:/home/app/.aspnet/DataProtection-Keys
+  postgres:
+    image: postgres:18
+    shm_size: 256mb
+    environment:
+      POSTGRES_DB: cfis
+      POSTGRES_USER: cfis
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cfis -d cfis"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  pgdata:
+  keys:

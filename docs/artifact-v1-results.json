@@ -1,0 +1,9 @@
+{
+  "realLogin": true,
+  "demo": true,
+  "date": "2026-11-01T05:06:39.9422309+08:00",
+  "backendStarted": true,
+  "reconciliation": true,
+  "version": "1.0.0",
+  "restrictedRole": "cfis_app"
+}

@@ -1,0 +1,11 @@
+{
+  "httpsFrontend": true,
+  "date": "2026-11-01T03:54:35.8581018+08:00",
+  "registrationDisabled": true,
+  "certificate": "Local rehearsal self-signed certificate; trusted public certificate required for public hosting",
+  "encryptedProtectionKeys": true,
+  "seconds": 29.34,
+  "existingUserLogin": true,
+  "rollback": "Returned to development compose without deleting data or keys",
+  "productionApi": true
+}

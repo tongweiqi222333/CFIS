@@ -1,0 +1,30 @@
+# Local production-mode rehearsal. Put a trusted certificate at this path for real hosting.
+services:
+  api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Auth__AllowRegistration: "false"
+      AllowedHosts: ${CFIS_ALLOWED_HOSTS:-localhost;127.0.0.1}
+      DataProtection__CertificatePath: /certificates/protection.pfx
+      DataProtection__CertificatePassword: ${PROTECTION_CERTIFICATE_PASSWORD:?Initialize deployment certificates}
+      Smtp__Host: ${SMTP_HOST:-}
+      Smtp__Port: ${SMTP_PORT:-587}
+      Smtp__From: ${SMTP_FROM:-}
+      Smtp__User: ${SMTP_USER:-}
+      Smtp__Password: ${SMTP_PASSWORD:-}
+    volumes: !override
+      - production_keys:/home/app/.aspnet/DataProtection-Keys
+      - ./output/deployment:/certificates:ro
+    ports: !reset []
+  postgres:
+    ports: !reset []
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:8443:443"
+    volumes:
+      - ./output/deployment:/certificates:ro
+    depends_on:
+      - api
+volumes:
+  production_keys:

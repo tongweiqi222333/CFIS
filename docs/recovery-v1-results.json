@@ -1,0 +1,13 @@
+{
+  "existingAccessToken": true,
+  "businessContinued": true,
+  "snapshotUtc": "2026-10-31T20:54:12.0000000Z",
+  "date": "2026-11-01T04:54:37.8359302+08:00",
+  "existingLogin": true,
+  "existingRefreshToken": true,
+  "recoverySeconds": 9.02,
+  "runtimeRole": "cfis_app",
+  "attachments": "Uploaded before backup; restored download SHA256 matches original",
+  "rpo": "Snapshot recovery: writes after pg_dump snapshot are not included. No PITR configured.",
+  "backup": "cfis-20261101-045411.dump"
+}

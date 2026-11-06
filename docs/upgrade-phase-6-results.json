@@ -1,0 +1,8 @@
+{
+  "pendingModelChanges": false,
+  "to": "20261101040000_AcceptanceGuards",
+  "from": "20261031185520_FiniteMoneyGuards",
+  "date": "2026-11-01T03:46:36.8676419+08:00",
+  "dataDigestUnchanged": true,
+  "consistencyPassed": true
+}

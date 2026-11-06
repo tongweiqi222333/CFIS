@@ -1,0 +1,56 @@
+name: CFIS validation
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: cfis
+          POSTGRES_PASSWORD: ci-test-only-password
+          POSTGRES_DB: cfis
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U cfis" --health-interval 5s --health-retries 20
+    env:
+      CFIS_TEST_ADMIN: Host=localhost;Database=postgres;Username=cfis;Password=ci-test-only-password
+      ConnectionStrings__Database: Host=localhost;Database=cfis;Username=cfis;Password=ci-test-only-password
+      ASPNETCORE_ENVIRONMENT: Development
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: dotnet tool restore
+      - run: pwsh -File scripts/check-secrets.ps1
+      - run: dotnet restore --locked-mode
+      - run: dotnet build
+      - run: dotnet test --no-build --logger "trx;LogFileName=validation.trx" --results-directory output/tests
+      - run: dotnet ef database update --project backend/CFIS.Api
+      - run: npm ci && npm run build && npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: npm audit --audit-level=moderate
+        working-directory: frontend
+      - run: dotnet run --project backend/CFIS.Api --no-launch-profile --urls http://localhost:5080 > /tmp/cfis-api.log 2>&1 &
+      - run: |
+          for i in $(seq 1 30); do
+            if curl --fail http://localhost:5080/health/ready; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - run: npx playwright test
+        working-directory: frontend
+
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-diagnostics
+          path: |
+            frontend/test-results/
+            output/tests/
+            /tmp/cfis-api.log
+          retention-days: 7

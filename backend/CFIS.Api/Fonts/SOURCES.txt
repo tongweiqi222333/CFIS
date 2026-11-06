@@ -1,0 +1,7 @@
+Noto Sans SC: https://github.com/notofonts/noto-cjk
+Source: Sans/Variable/TTF/Subset/NotoSansSC-VF.ttf
+License: SIL Open Font License 1.1 (LICENSE.txt)
+Build: fontTools 4.68.0 instantiateVariableFont weight=400
+Bundled static TTF SHA256: 1D4840BE9C5DBCE7B829DDD3FED043C7A387753DD5B37B82142E19C7CDEC7E26
+PDFsharp pinned version 6.2.4: https://github.com/empira/PDFsharp/tree/v6.2.4
+PDFsharp license: MIT, see PDFsharp-LICENSE.txt

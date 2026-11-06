@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-01T03:45:13.0949178+08:00",
+  "attachments": "No attachment upload module exists; no attachment files to restore",
+  "businessContinued": true,
+  "existingLogin": true,
+  "runtimeRole": "cfis_app",
+  "backup": "cfis-20261101-034453.dump",
+  "existingAccessToken": true,
+  "existingRefreshToken": true,
+  "snapshotUtc": "2026-10-31T19:44:53.0000000Z",
+  "recoverySeconds": 6.09,
+  "rpo": "Snapshot recovery: writes after pg_dump snapshot are not included. No PITR configured."
+}
